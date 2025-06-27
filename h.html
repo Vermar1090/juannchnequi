@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nequi App</title>
-    <!-- Fuentes optimizadas para números geométricos -->
+    <link rel="stylesheet" href="./css/modal.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!-- SF Pro Display: Números geométricos modernos -->
@@ -48,9 +48,9 @@
         font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
           Helvetica, Arial, sans-serif;
         background: white;
-        min-height: 100vh;
-        max-width: 400px;
-        margin: 0 auto;
+        height: 100vh;
+        width: 100%;
+        margin: 0%;
         position: relative;
         overflow-x: hidden;
         color: white;
@@ -160,7 +160,7 @@
       .content-section {
         background: transparent;
         margin-top: -100px;
-        padding: 28px 24px 120px;
+        /* padding: 28px 24px 120px; */
         position: relative;
       }
 
@@ -221,8 +221,8 @@
       }
 
       .service-icon {
-        width: 64px;
-        height: 64px;
+        width: 100px;
+        height: 100px;
         border-radius: 10px;
         display: flex;
         align-items: center;
@@ -385,6 +385,131 @@
           padding: 24px 20px 120px;
         }
       }
+
+      .services-grid {
+        display: flex;
+        gap: 15px;
+        padding: 10px 0;
+        margin-bottom: 30px;
+      }
+
+      .scroll-container {
+        /* Configuración del scroll horizontal */
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        /* Hacer que la barra de scroll siempre sea visible */
+        scrollbar-width: thin;
+        scrollbar-color: transparent;
+
+        /* Para navegadores webkit (Chrome, Safari) */
+        -webkit-overflow-scrolling: touch;
+      }
+
+      /* Estilos personalizados para la barra de scroll en navegadores webkit */
+      .scroll-container::-webkit-scrollbar {
+        height: 8px;
+      }
+
+      .scroll-container::-webkit-scrollbar-track {
+        background: transparent;
+        border-radius: 4px;
+      }
+
+      .scroll-container::-webkit-scrollbar-thumb {
+        background: transparent;
+        border-radius: 4px;
+      }
+
+      .scroll-container::-webkit-scrollbar-thumb:hover {
+        background: transparent;
+      }
+
+      .service-item {
+        flex: 0 0 auto;
+        width: 120px;
+        text-align: center;
+        background: transparent;
+        border-radius: 10px;
+        /* padding: 15px; */
+        transition: transform 0.2s ease;
+        cursor: pointer;
+      }
+
+      /* .service-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        } */
+
+      .service-name {
+        font-size: 12px;
+        font-weight: 500;
+        color: #333;
+        margin-top: 8px;
+      }
+
+      .suggestions-section {
+        margin-top: 20px;
+      }
+
+      .suggestions-title {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #666;
+      }
+
+      /* Indicador visual de que se puede hacer scroll */
+      .scroll-container {
+        display: flex;
+        overflow-x: auto;
+        gap: 0%;
+        padding: 0px;
+        position: relative;
+        scroll-behavior: smooth;
+        -ms-overflow-style: none; /* IE y Edge */
+        scrollbar-width: none; /* Firefox */
+        margin-bottom: -20px;
+        margin-top: -10px;
+      }
+
+      .scroll-container::-webkit-scrollbar {
+        display: none; /* Chrome, Safari */
+      }
+
+      .scroll-container::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 20px;
+        height: 100%;
+
+        pointer-events: none;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .service-item {
+          width: 90px;
+          padding: 12px;
+        }
+
+        .service-icon {
+          width: 80px;
+          height: 80px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-icon img {
+          max-width: 250%;
+          max-height: 250%;
+        }
+
+        .service-name {
+          font-size: 11px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -524,9 +649,9 @@
               </svg>
             </span>
           </small>
-          <h2 id="saldo-visible">$235.560.000<small>,05</small></h2>
+          <h2 id="saldo-visible">$0<small>,05</small></h2>
           <h2 id="saldo-oculto" style="display: none">$ *****</h2>
-          <small id="total-visible">Total $ 235.560.000</small>
+          <small id="total-visible">Total $0.000</small>
           <small id="total-oculto" style="display: none">Total $ *******</small
           ><br />
           <button class="btn-plata">
@@ -589,7 +714,7 @@
         </div>
       </div>
 
-      <div class="services-grid">
+      <div class="services-grid scroll-container">
         <div class="service-item">
           <div class="service-icon negocio">
             <img width="100" height="100" src="./ico/Minegocio.svg" alt="" />
@@ -618,7 +743,7 @@
 
       <div class="suggestions-section">
         <div class="suggestions-title">Sugeridos Nequi</div>
-        <div class="services-grid">
+        <div class="services-grid scroll-container">
           <div class="service-item">
             <div class="service-icon negocio">
               <img width="90" height="90" src="./ico/Minegocio.svg" alt="" />
@@ -715,9 +840,105 @@
       </div>
 
       <div>
-        <button class="money-button">$</button>
+        <button class="open-btn" onclick="openModal()">$</button>
+
+        <!-- Overlay -->
+        <div class="overlay" style="display: none;"></div>
       </div>
     </div>
+
+   <div class="modal-nequi">
+        <div class="modal-content">
+            <div class="item" onclick="handleAction('pagar')">
+                <span class="label"> + Servicios</span>
+                <div class="icon-btn grid-icon"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" color="white" fill="currentColor" class="bi bi-grid" viewBox="0 0 16 16">
+  <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5z"/>
+</svg></div>
+            </div>
+            
+            <div class="item" onclick="handleAction('cobrar')">
+                <span class="label">Saca</span>
+                <div class="icon-btn"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" color="white" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4"/>
+            </svg></div>
+            </div>
+            
+            <div class="item" onclick="handleAction('enviar')">
+                <span class="label">Pide</span>
+                <div class="icon-btn"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+        </svg></div>
+            </div>
+            
+            <div class="item" onclick="handleAction('servicios')">
+                <span class="label">Envia</span>
+                <div class="icon-btn"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8"/>
+            </svg></div>
+            </div>
+
+            <div class="item" onclick="handleAction('servicios')">
+                <span class="label">Código QR</span>
+                <div class="icon-btn "><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-qr-code-scan" viewBox="0 0 16 16">
+  <path d="M0 .5A.5.5 0 0 1 .5 0h3a.5.5 0 0 1 0 1H1v2.5a.5.5 0 0 1-1 0zm12 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0V1h-2.5a.5.5 0 0 1-.5-.5M.5 12a.5.5 0 0 1 .5.5V15h2.5a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1 0-1H15v-2.5a.5.5 0 0 1 .5-.5M4 4h1v1H4z"/>
+  <path d="M7 2H2v5h5zM3 3h3v3H3zm2 8H4v1h1z"/>
+  <path d="M7 9H2v5h5zm-4 1h3v3H3zm8-6h1v1h-1z"/>
+  <path d="M9 2h5v5H9zm1 1v3h3V3zM8 8v2h1v1H8v1h2v-2h1v2h1v-1h2v-1h-3V8zm2 2H9V9h1zm4 2h-1v1h-2v1h3zm-4 2v-1H8v1z"/>
+  <path d="M12 9h2V8h-2z"/>
+</svg></div>
+            </div>
+
+            <div class="item" onclick="handleAction('servicios')">
+                <span class="label">Recarga Nequi</span>
+                <div class="icon-btn "><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5"/>
+</svg></div>
+            </div>
+            
+            <div class="close-btn" onclick="closeModal()">×</div>
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            const overlay = document.querySelector('.overlay');
+            const modal = document.querySelector('.modal-nequi');
+            
+            overlay.classList.add('show');
+            modal.classList.add('show');
+            
+            // Prevenir scroll del body
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const overlay = document.querySelector('.overlay');
+            const modal = document.querySelector('.modal-nequi');
+            
+            // overlay.classList.remove('show');
+            modal.classList.remove('show');
+            
+            // Restaurar scroll del body
+            document.body.style.overflow = 'auto';
+        }
+
+        function handleAction(action) {
+            alert(`Acción seleccionada: ${action}`);
+            closeModal();
+        }
+
+        // Cerrar modal con tecla ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Prevenir cierre accidental al tocar el modal
+        document.querySelector('.modal-content').addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    </script>
 
     <script>
       let visible = true;
