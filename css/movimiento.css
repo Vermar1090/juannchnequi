@@ -1,0 +1,159 @@
+   header {
+      padding: 20px;
+      font-size: 22px;
+      font-weight: 700;
+      color: #2c1d2d;
+    }
+
+    .search {
+      padding: 0 20px 5px;
+      position: relative;
+    }
+
+    .search i {
+      position: absolute;
+      top: 50%;
+      left: 30px;
+      transform: translateY(-50%);
+      color: #888;
+      font-size: 18px;
+    }
+
+    .search input {
+      width: 100%;
+      padding: 12px 12px 12px 42px;
+      border-radius: 10px;
+      border: none;
+      background-color: #f2f2f2;
+      font-size: 16px;
+    }
+
+    .linea-gris {
+      width: 90%;
+      height: 1px;
+      background-color: #ddd;
+      margin: 10px auto;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      padding: 0 20px 15px;
+    }
+
+    .tabs button {
+      flex: 1;
+      padding: 10px;
+      font-size: 15px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      background: transparent;
+      color: #2c1d2d;
+      cursor: pointer;
+      font-weight: 400;
+      transition: all 0.3s ease;
+    }
+
+    .tabs button.active {
+      background-color: #ec008c;
+      color: white;
+      border-color: #ec008c;
+    }
+
+    .contenedor-secciones {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      min-height: 400px;
+    }
+
+    .seccion-dia {
+      padding: 0 20px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      transition: transform 0.4s ease, opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(100%);
+    }
+
+    .seccion-dia.activa {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0%);
+    }
+
+    .titulo-dia {
+      font-weight: 600;
+      font-size: 15px;
+      margin: 12px 0 5px;
+      color: #444;
+    }
+
+    .movimiento {
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      border: 1px solid #eaeaea;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      display: grid;
+      grid-template-columns: 30px 1fr auto;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .icono i {
+      font-size: 20px;
+    }
+
+    .label {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .detalle {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .info-texto {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    .monto {
+      font-weight: 700;
+      font-size: 14px;
+      text-align: right;
+    }
+
+    .monto .decimal {
+      font-size: 11px;
+      font-weight: 400;
+    }
+
+    .salida {
+      color: #d1003f;
+    }
+
+    .entrada {
+      color: #1a9e37;
+    }
+
+    .fab {
+      position: fixed;
+      bottom: 70px;
+      right: 20px;
+      background: #ec008c;
+      color: white;
+      padding: 16px;
+      border-radius: 50%;
+      font-size: 22px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+      border: none;
+    }
