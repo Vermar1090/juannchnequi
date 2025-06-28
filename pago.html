@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enviar Plata</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- Fuente Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
+
+    <!-- SF Pro Display: Números geométricos modernos -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <!-- Nunito Sans: Números redondos y geométricos -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <!-- Work Sans: Números geométricos limpios -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <!-- Outfit: Números geométricos modernos -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <!-- Roboto base -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet" />
+
+    <style>
+        :root {
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+                Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+                Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+                Helvetica, Arial, sans-serif;
+            margin: 0;
+            background: #fff;
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin: 20px 0 10px;
+            color: #1c071e;
+        }
+
+        .input-grupo {
+            position: relative;
+            margin-bottom: 20px;
+            background-color: #fcf7fb;
+        }
+
+        .input-grupo::placeholder {
+            color: black;
+        }
+
+        .input-grupo label {
+            position: absolute;
+            left: 15px;
+            top: 18px;
+            font-size: 16px;
+            color: #777;
+            background: transparent;
+            transition: all 0.2s ease;
+            z-index: 1;
+            padding: 0 5px;
+        }
+
+        .input-grupo.activo label {
+            top: 5px;
+            font-size: 12px;
+            color: #ec008c;
+            background: transparent;
+        }
+
+        .input-grupo input,
+        .input-grupo textarea {
+            width: 100%;
+            border: none;
+            background: transparent;
+            padding: 24px 15px 10px;
+            font-size: 16px;
+            border-radius: 10px;
+        }
+
+        .input-grupo input:focus,
+        .input-grupo textarea:focus {
+            outline: 2px solid #ec008c44;
+        }
+
+        .input-grupo textarea {
+            resize: none;
+            height: 100px;
+        }
+
+        .input-icono-derecha {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b006e;
+            font-size: 20px;
+            z-index: 2;
+        }
+
+        .input-grupo input#cel {
+            padding-right: 45px;
+        }
+
+        .nota {
+            font-size: 12px;
+            color: #777;
+            margin-top: -15px;
+            margin-bottom: 15px;
+        }
+
+        .seccion {
+            margin-top: 25px;
+        }
+
+        .seccion-titulo {
+            color: #ec008c;
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .origen {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+            padding: 10px 14px;
+            justify-content: space-between;
+        }
+
+        .origen-izq {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .origen-icono {
+            width: 32px;
+            height: 32px;
+            background: #ec008c;
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .origen-icono img {
+            width: 100%;
+            height: auto;
+        }
+
+        .btn-sigue {
+            background: #ec008c;
+            color: white;
+            font-size: 16px;
+            width: calc(100% - 20px);
+            padding: 14px;
+            border: none;
+            border-radius: 5px;
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        .btn-sigue:disabled {
+            background: #f5a8d1;
+            cursor: not-allowed;
+        }
+
+        .volver {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Flecha volver -->
+    <div class="volver">
+        <a href="#" onclick="window.history.back()">
+            <svg xmlns="http://www.w3.org/2000/svg" style="color: #1c071e;" width="32" height="32" fill="currentColor"
+                class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                    d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5" />
+            </svg>
+        </a>
+    </div>
+
+    <h2>Envía plata</h2>
+
+    <!-- Campo Celular -->
+    <div class="input-grupo" id="grupoCel">
+        <label for="cel">Cel</label>
+        <input id="cel" type="text" maxlength="10" oninput="validarCelular()" />
+        <i class="bi bi-person-plus input-icono-derecha"></i>
+    </div>
+
+    <div class="nota">Revisa bien el número para enviarle a la persona correcta</div>
+
+    <!-- Campo Monto -->
+    <div class="input-grupo" id="grupoMonto">
+        <label for="monto">¿Cuánto?</label>
+        <input id="monto" type="text" oninput="checkCampos()" />
+    </div>
+
+    <!-- Campo Mensaje -->
+    <div class="input-grupo" id="grupoMensaje">
+        <label for="mensaje">Mensaje</label>
+        <textarea id="mensaje" rows="3" oninput="checkCampos()"></textarea>
+    </div>
+
+    <!-- Sección de origen -->
+    <div class="seccion">
+        <div class="seccion-titulo">Escoge de donde saldrá la plata</div>
+        <div class="origen">
+            <div class="origen-izq">
+                <div class="origen-icono">
+                    <img src="./ico/image.png" alt="icono" />
+                </div>
+                <div>Disponible</div>
+            </div>
+            <i class="bi bi-chevron-right"></i>
+        </div>
+    </div>
+
+    <!-- Botón -->
+    <button id="btnSigue" class="btn-sigue" disabled>Sigue</button>
+
+    <!-- ... todo el código anterior igual hasta el <script> -->
+    <script>
+        const campos = ['cel', 'monto'];
+
+        // Formatea el monto como moneda COP
+        function formatearMoneda(valor) {
+            valor = valor.replace(/\D/g, ''); // Quita todo lo que no es número
+            if (valor === '') return '';
+            return '$ ' + Number(valor).toLocaleString('es-CO');
+        }
+
+        // Validación general
+        function checkCampos() {
+            let todosLlenos = true;
+
+            // Campo CEL
+            const cel = document.getElementById('cel');
+            const grupoCel = document.getElementById('grupoCel');
+            const celValor = cel.value.trim();
+            if (celValor !== '') {
+                grupoCel.classList.add('activo');  // Activa label si hay algo
+            } else {
+                grupoCel.classList.remove('activo');
+                todosLlenos = false;
+            }
+
+            const celValido = /^\d{10}$/.test(celValor); // Validar si son 10 dígitos
+
+            if (!celValido) {
+                todosLlenos = false;
+            }
+
+            // Campo MONTO
+            const monto = document.getElementById('monto');
+            const grupoMonto = document.getElementById('grupoMonto');
+            const montoRaw = monto.value.replace(/\D/g, '');
+            if (montoRaw !== '') {
+                grupoMonto.classList.add('activo');
+            } else {
+                grupoMonto.classList.remove('activo');
+                todosLlenos = false;
+            }
+
+            // Campo MENSAJE
+            const mensaje = document.getElementById('mensaje');
+            const grupoMensaje = document.getElementById('grupoMensaje');
+            if (mensaje.value.trim() !== '') {
+                grupoMensaje.classList.add('activo');
+            } else {
+                grupoMensaje.classList.remove('activo');
+            }
+
+            document.getElementById('btnSigue').disabled = !todosLlenos;
+        }
+
+
+        // Formateo automático del campo monto
+        const inputMonto = document.getElementById('monto');
+        inputMonto.addEventListener('input', (e) => {
+            const caret = e.target.selectionStart;
+            const valorSinFormato = e.target.value.replace(/\D/g, '');
+            e.target.value = formatearMoneda(valorSinFormato);
+            checkCampos();
+        });
+
+
+        function validarCelular() {
+            const cel = document.getElementById('cel');
+            const grupoCel = document.getElementById('grupoCel');
+            let valor = cel.value.replace(/\D/g, ''); // elimina letras y símbolos
+            if (valor.length > 10) valor = valor.slice(0, 10); // máximo 10
+
+            cel.value = valor;
+
+            if (valor !== '') {
+                grupoCel.classList.add('activo');
+            } else {
+                grupoCel.classList.remove('activo');
+            }
+
+            checkCampos(); // seguir validando todo
+        }
+
+        function checkCampos() {
+            let todosLlenos = true;
+
+            const cel = document.getElementById('cel');
+            const celValido = /^\d{10}$/.test(cel.value);
+            if (!celValido) todosLlenos = false;
+
+            const monto = document.getElementById('monto');
+            const grupoMonto = document.getElementById('grupoMonto');
+            const montoRaw = monto.value.replace(/\D/g, '');
+            if (montoRaw !== '') {
+                grupoMonto.classList.add('activo');
+            } else {
+                grupoMonto.classList.remove('activo');
+                todosLlenos = false;
+            }
+
+            const mensaje = document.getElementById('mensaje');
+            const grupoMensaje = document.getElementById('grupoMensaje');
+            if (mensaje.value.trim() !== '') {
+                grupoMensaje.classList.add('activo');
+            } else {
+                grupoMensaje.classList.remove('activo');
+            }
+
+            document.getElementById('btnSigue').disabled = !todosLlenos;
+        }
+        // Validación también cuando se escribe en celular
+        document.getElementById('cel').addEventListener('input', checkCampos);
+        document.getElementById('mensaje').addEventListener('input', checkCampos);
+    </script>
+
+
+</body>
+
+</html>
