@@ -7,6 +7,7 @@
   <title>Nequi App</title>
   <link rel="stylesheet" href="./css/modal.css" />
   <link rel="stylesheet" href="./css/modalp.css">
+  <link rel="stylesheet" href="./css/movimiento.css">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
@@ -15,6 +16,10 @@
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
+
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <!-- Fuente Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 
 
@@ -287,6 +292,19 @@
     }
 
     /* Bottom Navigation mejorada */
+    .seccion {
+      display: none;
+    }
+
+    .seccion.activa {
+      display: block;
+    }
+
+
+
+
+
+
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -294,15 +312,25 @@
       transform: translateX(-50%);
       width: 100%;
       max-width: 400px;
-      background: transparent;
-      backdrop-filter: blur(20px);
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
-      padding: 0px;
-      display: grid;
-      grid-template-columns: 3fr 1fr;
-      margin-left: 12px;
+      padding: 5px 10px;
+      background-color: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid #ddd;
+      z-index: 1000;
+    }
+
+    .menuuuu {
+      display: flex;
+      flex: 1;
+      justify-content: space-around;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+      padding: 8px 10px;
+      margin-right: 12px;
     }
 
     .nav-item {
@@ -311,21 +339,25 @@
       align-items: center;
       gap: 4px;
       cursor: pointer;
+      padding: 6px 10px;
+      color: #000; /* texto por defecto */
+      border-radius: 8px;
       transition: all 0.2s ease;
-      padding: 8px 12px;
-      color: #718096;
+    }
+
+    .nav-item i {
+      color: #bbb; /* ícono gris por defecto */
+      font-size: 18px;
+      transition: color 0.2s ease;
     }
 
     .nav-item.active {
-      color: #2d3748;
+      background-color: rgb(248, 237, 246);
+      color: #000;
     }
 
-    .nav-item:hover {
-      transform: translateY(-1px);
-    }
-
-    .nav-icon {
-      font-size: 22px;
+    .nav-item.active i {
+      color: #000; /* ícono negro cuando activo */
     }
 
     .nav-label {
@@ -338,9 +370,9 @@
       height: 56px;
       background: #fd108e;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       color: white;
-      font-size: 30px;
+      font-size: 28px;
       font-weight: 500;
       cursor: pointer;
       box-shadow: 0 4px 16px rgba(255, 20, 147, 0.3);
@@ -349,27 +381,14 @@
 
     .money-button:hover {
       transform: scale(1.05);
-      box-shadow: 0 6px 20px rgba(255, 20, 147, 0.4);
     }
 
-    /* Hide/Show balance functionality */
-    .hidden {
-      display: none !important;
-    }
 
-    .menuuuu {
-      border-radius: 10px;
-      margin: 5px;
-      box-shadow: 10px 15px 15px grey;
-      background-color: rgba(255, 255, 255, 0.811);
-    }
 
-    .active {
-      background-color: rgb(248, 237, 246);
-      height: auto;
-      width: 100%;
-      border-radius: 10px;
-    }
+
+
+
+
 
     /* Responsive */
     @media (max-width: 380px) {
@@ -527,7 +546,9 @@
 </head>
 
 <body>
-  <div class="header-container">
+
+   <div id="inicio" class="seccion activa">
+     <div class="header-container">
     <!-- SVG morado con forma poligonal -->
     <svg class="svg-header-morado" viewBox="0 0 100 100" preserveAspectRatio="none">
       <polygon fill="#2a0033" points="0,0 100,0 100,50 80,70 80,70 8,65 0,50 0,55" />
@@ -597,9 +618,9 @@
             </svg>
           </span>
         </small>
-        <h2 id="saldo-visible">$ 235.560.000 <small>,05</small></h2>
+        <h2 id="saldo-visible">$ 35.560.000 <small>,05</small></h2>
         <h2 id="saldo-oculto" style="display: none">$ *****</h2>
-        <small id="total-visible">Total $ 236.560.000</small>
+        <small id="total-visible">Total $ 35.560.000</small>
         <small id="total-oculto" style="display: none">Total $ *******</small><br />
         <button class="btn-plata">
           Tu plata
@@ -692,55 +713,155 @@
     </div>
   </div>
 
-  <div class="bottom-nav">
-    <div class="menuuuu" style="
-          display: flex;
-          gap: 15px;
-          align-items: center;
-          height: 64px;
-          justify-content: center;
-        ">
-      <div class="nav-item active">
-        <div class="nav-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-            class="bi bi-house-door-fill" viewBox="0 0 16 16">
-            <path
-              d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5" />
-          </svg>
+  </div>
+
+
+
+
+
+
+
+
+  <div id="movimientos" class="seccion">
+      <header>Movimientos</header>
+
+  <div class="search">
+    <i class="bi bi-search"></i>
+    <input type="text" placeholder="Busca..." />
+  </div>
+
+  <div class="linea-gris"></div>
+
+  <div class="tabs">
+    <button class="active" onclick="filtrar(this, 'hoy')">Hoy</button>
+    <button onclick="filtrar(this, 'mas')">Más Movimientos</button>
+  </div>
+
+  <div class="contenedor-secciones">
+    <div id="movimientos-hoy" class="seccion-dia activa">
+     <div class="titulo-dia">Hoy</div>
+      <div class="movimiento">
+        <div class="icono"><i class="bi bi-arrow-down-circle" style="color: red;"></i></div>
+        <div class="info-texto">
+          <div class="label">Corresponsal</div>
+          <div class="detalle">Sacaste en</div>
         </div>
+        <div class="monto salida">- $130.000,<span class="decimal">00</span></div>
+      </div>
+
+      <div class="movimiento">
+        <div class="icono"><i class="bi bi-arrow-up-circle" style="color: green;"></i></div>
+        <div class="info-texto">
+          <div class="label">NODIS</div>
+          <div class="detalle">De Carmen Martínez</div>
+        </div>
+        <div class="monto entrada">+ $70.000,<span class="decimal">00</span></div>
+      </div>
+    </div>
+
+    <div id="mas-movimientos" class="seccion-dia">
+      <div class="grupo-dia">
+        <div class="titulo-dia">Ayer</div>
+        <div class="movimiento">
+          <div class="icono"><i class="bi bi-arrow-down-circle" style="color: red;"></i></div>
+          <div class="info-texto">
+            <div class="label">Bancolombia</div>
+            <div class="detalle">Retiro</div>
+          </div>
+          <div class="monto salida">- $200.000,<span class="decimal">00</span></div>
+        </div>
+      </div>
+
+      <div class="grupo-dia">
+        <div class="titulo-dia">Miércoles</div>
+        <div class="movimiento">
+          <div class="icono"><i class="bi bi-arrow-up-circle" style="color: green;"></i></div>
+          <div class="info-texto">
+            <div class="label">Pago venta</div>
+            <div class="detalle">De Sara</div>
+          </div>
+          <div class="monto entrada">+ $300.000,<span class="decimal">00</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+
+  <script>
+    function filtrar(btn, destino) {
+      // Remover clase active de todos los botones
+      document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const hoy = document.getElementById('movimientos-hoy');
+      const mas = document.getElementById('mas-movimientos');
+
+      // Determinar qué sección mostrar
+      if (destino === 'hoy') {
+        // Mostrar "Hoy"
+        mas.classList.remove('activa');
+        hoy.classList.add('activa');
+      } else {
+        // Mostrar "Más Movimientos"
+        hoy.classList.remove('activa');
+        mas.classList.add('activa');
+      }
+    }
+  </script>
+  </div>
+
+
+
+
+
+
+
+  <div id="servicios" class="seccion">
+    <h2>🧰 Servicios</h2>
+    <p>Accede a tus servicios disponibles.</p>
+  </div>
+
+
+ 
+
+
+
+ <div class="bottom-nav">
+    <div class="menuuuu">
+      <div class="nav-item active" onclick="navegar('inicio', this)">
+        <div class="nav-icon"><i class="bi bi-house-door-fill"></i></div>
         <div class="nav-label">Inicio</div>
       </div>
-      <div class="nav-item">
-        <div class="nav-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-receipt"
-            viewBox="0 0 16 16">
-            <path
-              d="M1.92.506a.5.5 0 0 1 .434.14L3 1.293l.646-.647a.5.5 0 0 1 .708 0L5 1.293l.646-.647a.5.5 0 0 1 .708 0L7 1.293l.646-.647a.5.5 0 0 1 .708 0L9 1.293l.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .801.13l.5 1A.5.5 0 0 1 15 2v12a.5.5 0 0 1-.053.224l-.5 1a.5.5 0 0 1-.8.13L13 14.707l-.646.647a.5.5 0 0 1-.708 0L11 14.707l-.646.647a.5.5 0 0 1-.708 0L9 14.707l-.646.647a.5.5 0 0 1-.708 0L7 14.707l-.646.647a.5.5 0 0 1-.708 0L5 14.707l-.646.647a.5.5 0 0 1-.708 0L3 14.707l-.646.647a.5.5 0 0 1-.801-.13l-.5-1A.5.5 0 0 1 1 14V2a.5.5 0 0 1 .053-.224l.5-1a.5.5 0 0 1 .367-.27m.217 1.338L2 2.118v11.764l.137.274.51-.51a.5.5 0 0 1 .707 0l.646.647.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.509.509.137-.274V2.118l-.137-.274-.51.51a.5.5 0 0 1-.707 0L12 1.707l-.646.647a.5.5 0 0 1-.708 0L10 1.707l-.646.647a.5.5 0 0 1-.708 0L8 1.707l-.646.647a.5.5 0 0 1-.708 0L6 1.707l-.646.647a.5.5 0 0 1-.708 0L4 1.707l-.646.647a.5.5 0 0 1-.708 0z" />
-            <path
-              d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m8-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5" />
-          </svg>
-        </div>
+      <div class="nav-item" onclick="navegar('movimientos', this)">
+        <div class="nav-icon"><i class="bi bi-receipt"></i></div>
         <div class="nav-label">Movimientos</div>
       </div>
-      <div class="nav-item">
-        <div class="nav-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grid"
-            viewBox="0 0 16 16">
-            <path
-              d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5z" />
-          </svg>
-        </div>
+      <div class="nav-item" onclick="navegar('servicios', this)">
+        <div class="nav-icon"><i class="bi bi-grid"></i></div>
         <div class="nav-label">Servicios</div>
       </div>
     </div>
 
-    <div>
-      <button class="open-btn" onclick="openModal()">$</button>
+     <button class="money-button" onclick="openModal()">$</button>
 
       <!-- Overlay -->
       <div class="overlay" style="display: none;"></div>
-    </div>
   </div>
+
+  <!-- Script de navegación -->
+  <script>
+    function navegar(id, el) {
+      // Mostrar sección activa
+      document.querySelectorAll('.seccion').forEach(sec => sec.classList.remove('activa'));
+      document.getElementById(id).classList.add('activa');
+
+      // Resaltar ítem activo
+      document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+      el.classList.add('active');
+    }
+  </script>
+  
 
   <div class="modal-nequi">
     <div class="modal-content">
