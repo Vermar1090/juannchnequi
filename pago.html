@@ -92,16 +92,27 @@
         .input-grupo input,
         .input-grupo textarea {
             width: 100%;
-            border: none;
+            border: none !important;
             background: transparent;
             padding: 24px 15px 10px;
             font-size: 16px;
             border-radius: 10px;
+            outline: none !important;
+            box-shadow: none !important;
         }
 
         .input-grupo input:focus,
         .input-grupo textarea:focus {
-            outline: 2px solid #ec008c44;
+            outline: none !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        .input-grupo input:active,
+        .input-grupo textarea:active {
+            outline: none !important;
+            border: none !important;
+            box-shadow: none !important;
         }
 
         .input-grupo textarea {
