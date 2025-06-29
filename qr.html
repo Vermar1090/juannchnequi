@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nequi QR</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background: #ffffff;
+      color: #1a1a1a;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .title {
+      font-size: 28px;
+      margin-bottom: 20px;
+      color: #330033;
+    }
+
+    .campo {
+      margin-bottom: 20px;
+    }
+
+    .campo label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #666;
+    }
+
+    .input-display {
+      background: #f8f3f8;
+      padding: 14px;
+      border-radius: 8px;
+      color: #444;
+    }
+
+    .input-field {
+      width: 90%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      background: #f8f3f8;
+      font-size: 16px;
+    }
+
+    .subtitulo {
+      color: #e6007e;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .opcion-fondo {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      gap: 12px;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .opcion-fondo .icono {
+      width: 24px;
+      height: 24px;
+    }
+
+    .opcion-texto {
+      flex: 1;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .flecha {
+      font-size: 18px;
+      color: #999;
+    }
+
+    .btn-pagar {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      background: #fa4aa7;
+      color: white;
+      font-size: 18px;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- Escáner QR -->
+    <div class="scanner-section" id="scannerSection">
+      <h1>Escanea QR</h1>
+      <div id="reader"></div>
+    </div>
+
+    <!-- Pantalla de pago tipo Nequi -->
+    <div id="pagoUI" style="display: none;">
+      <h1 class="title">Paga</h1>
+
+      <div class="campo">
+        <label>Paga en</label>
+        <div id="nombreQR" class="input-display"></div>
+      </div>
+
+      <div class="campo">
+        <label>Cantidad</label>
+        <input id="cantidad" type="number" placeholder="Cantidad" class="input-field" />
+      </div>
+
+      <p class="subtitulo">Escoge de donde saldrá la plata</p>
+
+      <div class="opcion-fondo">
+        <img src="https://img.icons8.com/fluency-systems-filled/48/fa4aa7/grid-2.png" class="icono" />
+        <span class="opcion-texto">Disponible</span>
+        <span class="flecha">&#10095;</span>
+      </div>
+
+      <button class="btn-pagar" onclick="pagar()">Paga</button>
+    </div>
+  </div>
+
+  <script>
+    const html5QrCode = new Html5Qrcode("reader");
+
+    function buscarValor(cadena, campo) {
+      const index = cadena.indexOf(campo);
+      if (index !== -1 && cadena.length > index + 4) {
+        const length = parseInt(cadena.substr(index + 2, 2));
+        if (!isNaN(length)) {
+          return cadena.substr(index + 4, length);
+        }
+      }
+      return null;
+    }
+
+    function extraerTelefonoDesdeBase(data) {
+      const base62 = buscarValor(data, "62");
+      if (!base62) return "No encontrado";
+      const baseField = buscarValor(base62, "81");
+      if (!baseField) return "No encontrado";
+      const match = baseField.match(/3\d{9}/);
+      return match ? match[0] : "No encontrado";
+    }
+
+    function parseEMVQR(data) {
+      return {
+        nombre: buscarValor(data, "59") || "No disponible",
+        ciudad: buscarValor(data, "60") || "No disponible",
+        valor: buscarValor(data, "54") || "0.00",
+        moneda: buscarValor(data, "53") || "170",
+        telefono: extraerTelefonoDesdeBase(data),
+        original: data
+      };
+    }
+
+    function mostrarPago(info) {
+      document.getElementById("nombreQR").textContent = info.nombre;
+      document.getElementById("scannerSection").style.display = "none";
+      document.getElementById("pagoUI").style.display = "block";
+      window.datosInternosQR = info;
+    }
+
+    function onScanSuccess(decodedText) {
+      const info = parseEMVQR(decodedText);
+      mostrarPago(info);
+      html5QrCode.stop();
+    }
+
+    function pagar() {
+      const cantidad = document.getElementById("cantidad").value;
+      const nombre = window.datosInternosQR?.nombre || "Desconocido";
+      const telefono = window.datosInternosQR?.telefono || "No encontrado";
+
+      alert(`✅ Vas a pagar $${cantidad} a ${nombre} (${telefono})`);
+
+      // Reiniciar la UI y volver al escáner
+      document.getElementById("pagoUI").style.display = "none";
+      document.getElementById("scannerSection").style.display = "block";
+      html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, onScanSuccess);
+    }
+
+    window.onload = function () {
+      Html5Qrcode.getCameras().then(devices => {
+        if (devices.length) {
+          html5QrCode.start(
+            { facingMode: "environment" },
+            { fps: 10, qrbox: 250 },
+            onScanSuccess
+          );
+        }
+      });
+    };
+  </script>
+</body>
+
+</html>
