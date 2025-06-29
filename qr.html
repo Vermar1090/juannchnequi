@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nequi QR</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
@@ -102,17 +100,9 @@
     }
   </style>
 </head>
-
 <body>
   <div class="container">
-
-    <!-- Escáner QR -->
-    <div class="scanner-section" id="scannerSection">
-      <h1>Escanea QR</h1>
-      <div id="reader"></div>
-    </div>
-
-    <!-- Pantalla de pago tipo Nequi -->
+    <!-- Pantalla de pago -->
     <div id="pagoUI" style="display: none;">
       <h1 class="title">Paga</h1>
 
@@ -136,11 +126,15 @@
 
       <button class="btn-pagar" onclick="pagar()">Paga</button>
     </div>
+
+    <!-- Mensaje si no hay QR -->
+    <div id="errorUI" style="display: none;">
+      <h2 style="color: red;">❌ No se encontró ningún código QR</h2>
+      <p>Escanea el código QR desde AppCreator24 para continuar.</p>
+    </div>
   </div>
 
   <script>
-    const html5QrCode = new Html5Qrcode("reader");
-
     function buscarValor(cadena, campo) {
       const index = cadena.indexOf(campo);
       if (index !== -1 && cadena.length > index + 4) {
@@ -174,15 +168,8 @@
 
     function mostrarPago(info) {
       document.getElementById("nombreQR").textContent = info.nombre;
-      document.getElementById("scannerSection").style.display = "none";
       document.getElementById("pagoUI").style.display = "block";
       window.datosInternosQR = info;
-    }
-
-    function onScanSuccess(decodedText) {
-      const info = parseEMVQR(decodedText);
-      mostrarPago(info);
-      html5QrCode.stop();
     }
 
     function pagar() {
@@ -191,25 +178,20 @@
       const telefono = window.datosInternosQR?.telefono || "No encontrado";
 
       alert(`✅ Vas a pagar $${cantidad} a ${nombre} (${telefono})`);
-
-      // Reiniciar la UI y volver al escáner
-      document.getElementById("pagoUI").style.display = "none";
-      document.getElementById("scannerSection").style.display = "block";
-      html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, onScanSuccess);
     }
 
+    // Leer parámetro de URL
     window.onload = function () {
-      Html5Qrcode.getCameras().then(devices => {
-        if (devices.length) {
-          html5QrCode.start(
-            { facingMode: "environment" },
-            { fps: 10, qrbox: 250 },
-            onScanSuccess
-          );
-        }
-      });
+      const params = new URLSearchParams(window.location.search);
+      const data = params.get("data");
+
+      if (data) {
+        const info = parseEMVQR(data);
+        mostrarPago(info);
+      } else {
+        document.getElementById("errorUI").style.display = "block";
+      }
     };
   </script>
 </body>
-
 </html>
