@@ -92,13 +92,13 @@
         .input-grupo input,
         .input-grupo textarea {
             width: 100%;
-        border: none !important;
-        background: transparent;
-        padding: 31px 15px 10px;
-        font-size: 18px;
-        border-radius: 10px;
-        outline: none !important;
-        box-shadow: none !important;
+            border: none !important;
+            background: transparent;
+            padding: 31px 15px 10px;
+            font-size: 18px;
+            border-radius: 10px;
+            outline: none !important;
+            box-shadow: none !important;
         }
 
         .input-grupo input:focus,
@@ -158,7 +158,7 @@
             background: #fff;
             border-radius: 10px;
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-            padding: 10px 14px;
+            padding: 15px 14px;
             justify-content: space-between;
         }
 
@@ -169,8 +169,8 @@
         }
 
         .origen-icono {
-            width: 32px;
-            height: 32px;
+            width: 38px;
+            height: 38px;
             background: #ec008c;
             border-radius: 6px;
             overflow: hidden;
@@ -197,6 +197,10 @@
             left: 10px;
             right: 10px;
             cursor: pointer;
+            /* Estas propiedades evitan que el botón se mueva con el teclado */
+            z-index: 1000;
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
         }
 
         .btn-sigue:disabled {
@@ -207,6 +211,36 @@
         .volver {
             margin-top: 10px;
             margin-bottom: 10px;
+        }
+
+        /* Mejoras para dispositivos móviles */
+        @media screen and (max-width: 768px) {
+            .btn-sigue {
+                position: fixed;
+                bottom: env(safe-area-inset-bottom, 10px);
+                left: 10px;
+                right: 10px;
+                width: calc(100% - 20px);
+                max-width: calc(100vw - 20px);
+                /* Estas propiedades ayudan a mantener el botón en su lugar */
+                will-change: auto;
+                backface-visibility: hidden;
+                -webkit-backface-visibility: hidden;
+            }
+
+            /* Asegurar que el contenido no se superponga con el botón */
+            body {
+                padding-bottom: 90px;
+            }
+        }
+
+        /* Para navegadores iOS Safari específicamente */
+        @supports (-webkit-touch-callout: none) {
+            .btn-sigue {
+                position: -webkit-sticky;
+                position: sticky;
+                bottom: 10px;
+            }
         }
     </style>
 </head>
@@ -238,7 +272,7 @@
     <!-- Campo Monto -->
     <div class="input-grupo" id="grupoMonto">
         <label for="monto">¿Cuánto?</label>
-        <input id="monto" type="tel"  inputmode="numeric" oninput="checkCampos()" />
+        <input id="monto" type="tel" inputmode="numeric" oninput="checkCampos()" />
     </div>
 
     <!-- Campo Mensaje -->
