@@ -57,7 +57,12 @@
         h2 {
             font-size: 24px;
             margin: 20px 0 10px;
-            color: #1c071e;
+            color: #1f0721;
+        }
+
+        p {
+            color: #e6007e;
+            font-size: 15px;
         }
 
         .input-grupo {
@@ -242,8 +247,46 @@
                 bottom: 10px;
             }
         }
+
+        h5 {
+            margin-top: 10px;
+            color: #5d5858;
+            font-weight: 300;
+        }
     </style>
 </head>
+
+
+<div id="modalConfirmacion"
+    style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:end; transition: opacity 0.3s ease;">
+
+    <div
+        style="background:#fff; border-radius:20px 20px 0 0; padding:20px; width:100%; max-width:500px; box-shadow:0 -2px 10px rgba(0,0,0,0.1);">
+        <div style="text-align:right;">
+            <button onclick="cerrarModal()" style="border:none; color: #433545; background:none;     font-size: 36px;
+    font-weight: 300">&times;</button>
+        </div>
+        <h2 style="margin-top:0;">Confirma el número</h2>
+        <p style="color:#e6007e;">Vas a enviar a:</p>
+        <div id="nombrePersona" style="font-weight:300; font-size:18px;color: #240d25;">---</div>
+        <p style="color:#e6007e; margin-top:10px;">Al número de celular:</p>
+        <div id="celModal" style="font-weight:300; font-size:18px;color: #240d25;"></div>
+        <p style="color:#e6007e; margin-top:10px;">¿Cuánto?</p>
+        <div id="montoModal" style="font-weight:300; font-size:18px;color: #240d25;"></div>
+        <h5 style="margin-top:10px;">La plata saldrá de:</h5>
+        <div
+            style="display:flex;  align-items:center; gap:10px; background:#fafafa; padding:10px; border-radius:5px;     border: solid 1px #ececec;">
+            <img src="./ico/image.png" style="width: 47px;" />
+            <div>Disponible</div>
+        </div>
+        <button onclick="confirmarEnvio()"
+            style="width:100%; margin-top:20px; padding:14px; background:#ec008c; color:white; border:none; border-radius:5px;">Confirma</button>
+        <button onclick="cerrarModal()"
+            style="width:100%; margin-top:10px; padding:14px; background:white; border:1px solid #433545; border-radius:5px;">Corrige
+            algo</button>
+    </div>
+</div>
+
 
 <body>
 
@@ -411,6 +454,53 @@
         // Validación también cuando se escribe en celular
         document.getElementById('cel').addEventListener('input', checkCampos);
         document.getElementById('mensaje').addEventListener('input', checkCampos);
+
+
+      document.getElementById('btnSigue').addEventListener('click', function () {
+            const cel = document.getElementById('cel').value;
+            const monto = document.getElementById('monto').value;
+            const modal = document.getElementById('modalConfirmacion');
+
+            const datos = simularNombreDesdeCelular(cel);
+            const nombreEnmascarado = datos.enmascarado;
+            const nombreReal = datos.real;
+
+            document.getElementById('nombrePersona').textContent = nombreEnmascarado;
+            document.getElementById('celModal').textContent = cel.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
+            document.getElementById('montoModal').textContent = monto;
+
+            // Guarda nombre real en variable global temporal
+            window.nombreRealParaComprobante = nombreReal;
+
+            modal.style.display = 'flex';
+        });
+
+
+
+        function cerrarModal() {
+            document.getElementById('modalConfirmacion').style.display = 'none';
+        }
+
+       function confirmarEnvio() {
+    const nombreReal = window.nombreRealParaComprobante || 'Usuario Desconocido';
+    const monto = document.getElementById('montoModal').textContent;
+    const numero = document.getElementById('celModal').textContent;
+
+    const url = `comprobante.html?nombre=${encodeURIComponent(nombreReal)}&monto=${encodeURIComponent(monto)}&numero=${encodeURIComponent(numero)}`;
+    window.location.href = url;
+}
+
+
+       function simularNombreDesdeCelular(numero) {
+                const contactos = {
+                    '3147645793': { enmascarado: 'Vic*** Paj***', real: 'Victor Pajaro' },
+                    '3243037899': { enmascarado: 'Dei*** Mor***', real: 'Deiby Moreno' },
+                    '3201234567': { enmascarado: 'Ana*** Lop***', real: 'Ana López' },
+                };
+                return contactos[numero] || { enmascarado: 'Usu*** Desconoc***', real: 'Usuario Desconocido' };
+            }
+
+
     </script>
 
 
