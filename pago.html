@@ -227,9 +227,9 @@
     <h2>Envía plata</h2>
 
     <!-- Campo Celular -->
-    <div class="input-grupo" id="grupoCel">
+ <div class="input-grupo" id="grupoCel">
         <label for="cel">Cel</label>
-        <input id="cel" type="tel" maxlength="10" oninput="validarCelular()" />
+        <input id="cel" type="tel" maxlength="10" inputmode="numeric" oninput="validarCelular()" />
         <i class="bi bi-person-plus input-icono-derecha"></i>
     </div>
 
@@ -238,7 +238,7 @@
     <!-- Campo Monto -->
     <div class="input-grupo" id="grupoMonto">
         <label for="monto">¿Cuánto?</label>
-        <input id="monto" type="tel" oninput="checkCampos()" />
+        <input id="monto" type="tel"  inputmode="numeric" oninput="checkCampos()" />
     </div>
 
     <!-- Campo Mensaje -->
