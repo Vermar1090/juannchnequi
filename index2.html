@@ -148,9 +148,8 @@
       }
 
       .copy-icon {
-        width: 28px;
-        height: 28px;
-        border: 1px solid rgba(255, 255, 255, 0.4);
+        width: 30px;
+        height: 30px;
         border-radius: 4px;
         color: white;
         display: flex;
@@ -262,22 +261,21 @@
         position: relative;
         overflow: hidden;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(255, 20, 147, 0.3);
         display: flex;
         align-items: center;
         justify-content: center;
       }
 
-      .call-button:hover {
+      /* .call-button:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 25px rgba(255, 20, 147, 0.4);
-      }
+      } */
 
       /* Money Button */
       .money-button {
         width: 55px;
         height: 50px;
-        background: linear-gradient(135deg, #ff1493, #ff69b4);
+        background:  #ff1493;
         border: none;
         border-radius: 5px;
         color: white;
@@ -289,12 +287,11 @@
         align-items: center;
         justify-content: center;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(255, 20, 147, 0.3);
       }
 
-      .money-button:hover {
+      /* .money-button:hover {
         transform: scale(1.05);
-      }
+      } */
 
       /* Footer */
       .footer {
@@ -417,6 +414,7 @@
         width: 100%;
         max-width: 250px;
         margin-bottom: 40px;
+        margin-top: 50%;
       }
 
       .key {
@@ -597,9 +595,9 @@
         }
 
         .dynamic-key-info {
-          width: 50%;
-          padding: 1px;
-          margin-right: 20px;
+               width: 63%;
+        padding: 5px;
+        margin-right: -7px;
         }
 
         .key {
@@ -665,6 +663,9 @@
             border-radius: 5px;
             width: 200px;
         }
+        img{
+          width: 60%;
+        }
     </style>
   </head>
   <body>
@@ -682,7 +683,7 @@
             <div class="key-number geometric-numbers" id="dynamicKey">392150</div>
 
             <div class="copy-icon" onclick="copyToClipboard()">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"/>
               </svg>
             </div>
@@ -710,7 +711,7 @@
         </div>
 
         <div class="footer">
-          <img src="./src/by.svg" alt="">
+          <img width="50" src="./src/by.svg" alt="">
         </div>
       </div>
 
@@ -772,66 +773,51 @@
 
     <script>
       let currentPin = "";
-      let keyUpdateInterval;
-      let progressInterval;
-      let startTime;
+let keyUpdateInterval;
+let progressInterval;
+let startTime;
 
-      // Generate random dynamic key
-      function generateDynamicKey() {
-        return Math.floor(100000 + Math.random() * 900000);
-      }
+// Generate random dynamic key
+function generateDynamicKey() {
+  return Math.floor(100000 + Math.random() * 900000);
+}
 
-      // Initialize with random key
-      document.addEventListener("DOMContentLoaded", function () {
-        updateDynamicKey();
-        startProgressTimer();
-      });
+// Initialize with random key
+document.addEventListener("DOMContentLoaded", function () {
+  updateDynamicKey();
+  startProgressTimer();
+});
 
-    //   function showLoadingAndPin() {
-    //     const loadingScreen = document.getElementById("loadingScreen");
-    //     const pinScreen = document.getElementById("pinScreen");
+function showLoadingAndPin() {
+  const button = document.querySelector('.call-button');
+  const pinScreen = document.getElementById("pinScreen");
+  
+  // Deshabilitar el botón y mostrar loading
+  button.disabled = true;
+  button.classList.add('loading');
+  
+  // Después de 2 segundos, quitar loading y mostrar PIN
+  setTimeout(() => {
+    button.disabled = false;
+    button.classList.remove('loading');
+    pinScreen.style.display = "flex";
+  }, 2000);
+}
 
-    //     // Show loading screen
-    //     loadingScreen.style.display = "flex";
+function closePinScreen() {
+  const pinScreen = document.getElementById("pinScreen");
+  pinScreen.style.display = "none";
+}
 
-    //     // After 2 seconds, hide loading and show PIN screen
-    //     setTimeout(() => {
-    //       loadingScreen.style.display = "none";
-    //       pinScreen.style.display = "flex";
-    //     }, 2000);
-    //   }
+function goBack() {
+  const pinScreen = document.getElementById("pinScreen");
+  pinScreen.style.display = "none";
+  currentPin = "";
+  updateDots();
+}
 
-         function showLoadingAndPin() {
-            const button = document.querySelector('.call-button');
-            const pinScreen = document.getElementById("pinScreen");
-            
-            // Deshabilitar el botón y mostrar loading
-            button.disabled = true;
-            button.classList.add('loading');
-            
-            // Después de 2 segundos, quitar loading y mostrar PIN
-            setTimeout(() => {
-                button.disabled = false;
-                button.classList.remove('loading');
-                pinScreen.style.display = "flex";
-            }, 2000);
-        }
-
-        function closePinScreen() {
-            const pinScreen = document.getElementById("pinScreen");
-            pinScreen.style.display = "none";
-        }
-
-      function goBack() {
-        const pinScreen = document.getElementById("pinScreen");
-        pinScreen.style.display = "none";
-        currentPin = "";
-        updateDots();
-      }
-
-    function addDigit(digit) {
-        
-    const loadingScreen = document.getElementById("loadingScreen");
+function addDigit(digit) {
+  const loadingScreen = document.getElementById("loadingScreen");
   if (currentPin.length < 4) {
     currentPin += digit;
     updateDots();
@@ -854,94 +840,94 @@
   }
 }
 
-      function deleteDigit() {
-        if (currentPin.length > 0) {
-          currentPin = currentPin.slice(0, -1);
-          updateDots();
-        }
-      }
+function deleteDigit() {
+  if (currentPin.length > 0) {
+    currentPin = currentPin.slice(0, -1);
+    updateDots();
+  }
+}
 
-    function updateDots() {
-    for (let i = 1; i <= 4; i++) {
-        const dot = document.getElementById("dot" + i);
-        if (i <= currentPin.length) {
-        dot.classList.add("filled");
-        dot.textContent = '*';
-        } else {
-        dot.classList.remove("filled");
-        dot.textContent = ''; 
-        }
+function updateDots() {
+  for (let i = 1; i <= 4; i++) {
+    const dot = document.getElementById("dot" + i);
+    if (i <= currentPin.length) {
+      dot.classList.add("filled");
+      dot.textContent = '*';
+    } else {
+      dot.classList.remove("filled");
+      dot.textContent = ''; 
     }
-    }
+  }
+}
 
+// Generate new dynamic key
+function updateDynamicKey() {
+  const keyElement = document.getElementById("dynamicKey");
+  const newKey = generateDynamicKey();
+  keyElement.textContent = newKey;
 
-      // Generate new dynamic key
-      function updateDynamicKey() {
-        const keyElement = document.getElementById("dynamicKey");
-        const newKey = generateDynamicKey();
-        keyElement.textContent = newKey;
+  // Reset progress
+  startTime = Date.now();
+  updateProgress();
+}
 
-        // Reset progress
-        startTime = Date.now();
-        updateProgress();
-      }
+// Update progress circle - CAMBIADO PARA 1 MINUTO
+function updateProgress() {
+  const progressCircle = document.getElementById("progressCircle");
+  const elapsed = Date.now() - startTime;
+  // Cambio: ahora el progreso se completa en 60,000ms (1 minuto)
+  const progress = (elapsed / 60000) * 100; 
 
-      // Update progress circle
-      function updateProgress() {
-        const progressCircle = document.getElementById("progressCircle");
-        const elapsed = Date.now() - startTime;
-        const progress = (elapsed / 100000) * 1000; 
+  progressCircle.style.setProperty("--progress", progress + "%");
 
-        progressCircle.style.setProperty("--progress", progress + "%");
+  if (progress >= 100) {
+    updateDynamicKey(); // Generate new key
+  }
+}
 
-        if (progress >= 100) {
-          updateDynamicKey(); // Generate new key
-        }
-      }
+// Start progress timer - CAMBIADO PARA 1 MINUTO
+function startProgressTimer() {
+  startTime = Date.now();
 
-      // Start progress timer
-      function startProgressTimer() {
-        startTime = Date.now();
+  // Update every second
+  progressInterval = setInterval(updateProgress, 1000);
 
-        // Update every second
-        progressInterval = setInterval(updateProgress, 1000);
+  // Update key every 1 minute (60,000ms en lugar de 100,000ms)
+  keyUpdateInterval = setInterval(updateDynamicKey, 60000);
+}
 
-        // Update key every 5 minutes
-        keyUpdateInterval = setInterval(updateDynamicKey, 100000);
-      }
+// Copy to clipboard function
+function copyToClipboard() {
+  const keyNumber = document.getElementById("dynamicKey").textContent;
+  navigator.clipboard
+    .writeText(keyNumber)
+    .then(() => {
+      const copyIcon = document.querySelector(".copy-icon");
+      copyIcon.style.transform = "scale(1.1)";
+      copyIcon.style.background = "rgba(255, 255, 255, 0.3)";
 
-      // Copy to clipboard function
-      function copyToClipboard() {
-        const keyNumber = document.getElementById("dynamicKey").textContent;
-        navigator.clipboard
-          .writeText(keyNumber)
-          .then(() => {
-            const copyIcon = document.querySelector(".copy-icon");
-            copyIcon.style.transform = "scale(1.1)";
-            copyIcon.style.background = "rgba(255, 255, 255, 0.3)";
+      setTimeout(() => {
+        copyIcon.style.transform = "";
+        copyIcon.style.background = "";
+      }, 200);
+    })
+    .catch((err) => {
+      console.log("Error al copiar: ", err);
+    });
+}
 
-            setTimeout(() => {
-              copyIcon.style.transform = "";
-              copyIcon.style.background = "";
-            }, 200);
-          })
-          .catch((err) => {
-            console.log("Error al copiar: ", err);
-          });
-      }
+// Add touch feedback for mobile
+document
+  .querySelectorAll(".key, .call-button, .money-button")
+  .forEach((button) => {
+    button.addEventListener("touchstart", function () {
+      this.style.transform = "scale(0.95)";
+    });
 
-      // Add touch feedback for mobile
-      document
-        .querySelectorAll(".key, .call-button, .money-button")
-        .forEach((button) => {
-          button.addEventListener("touchstart", function () {
-            this.style.transform = "scale(0.95)";
-          });
-
-          button.addEventListener("touchend", function () {
-            this.style.transform = "";
-          });
-        });
+    button.addEventListener("touchend", function () {
+      this.style.transform = "";
+    });
+  });
     </script>
   </body>
 </html>
