@@ -286,6 +286,22 @@
             algo</button>
     </div>
 </div>
+<div id="modalNuevoContacto"
+    style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center;">
+    <div style="background:#fff; border-radius:10px; padding:20px; width:90%; max-width:400px;">
+        <h2>Nuevo contacto</h2>
+        <input type="tel" id="nuevoCel" placeholder="Número (10 dígitos)"
+            style="width:100%; margin-bottom:10px; padding:10px;" />
+        <input type="text" id="nuevoNombre" placeholder="Nombre real"
+            style="width:100%; margin-bottom:10px; padding:10px;" />
+        <input type="text" id="nuevoEnmascarado" placeholder="Nombre enmascarado"
+            style="width:100%; margin-bottom:10px; padding:10px;" />
+        <button onclick="confirmarNuevoContacto()"
+            style="width:100%; background:#ec008c; color:white; padding:10px; border:none; border-radius:5px;">Guardar</button>
+        <button onclick="cerrarModalContacto()"
+            style="width:100%; background:#ccc; margin-top:10px; padding:10px; border:none; border-radius:5px;">Cancelar</button>
+    </div>
+</div>
 
 
 <body>
@@ -307,7 +323,8 @@
     <div class="input-grupo" id="grupoCel">
         <label for="cel">Cel</label>
         <input id="cel" type="tel" maxlength="10" inputmode="numeric" oninput="validarCelular()" />
-        <i class="bi bi-person-plus input-icono-derecha"></i>
+        <i class="bi bi-person-plus input-icono-derecha" onclick="abrirModalContacto()"></i>
+
     </div>
 
     <div class="nota">Revisa bien el número para enviarle a la persona correcta</div>
@@ -456,12 +473,13 @@
         document.getElementById('mensaje').addEventListener('input', checkCampos);
 
 
-      document.getElementById('btnSigue').addEventListener('click', function () {
+        document.getElementById('btnSigue').addEventListener('click', function () {
             const cel = document.getElementById('cel').value;
             const monto = document.getElementById('monto').value;
             const modal = document.getElementById('modalConfirmacion');
 
-            const datos = simularNombreDesdeCelular(cel);
+            const datos = obtenerContactoDesdeLocalStorage(cel);
+
             const nombreEnmascarado = datos.enmascarado;
             const nombreReal = datos.real;
 
@@ -481,19 +499,57 @@
             document.getElementById('modalConfirmacion').style.display = 'none';
         }
 
-       function confirmarEnvio() {
-    const nombreReal = window.nombreRealParaComprobante || 'Usuario Desconocido';
-    const monto = document.getElementById('montoModal').textContent;
-    const numero = document.getElementById('celModal').textContent;
+        function confirmarEnvio() {
+            const nombreReal = window.nombreRealParaComprobante || 'Usuario Desconocido';
+            const monto = document.getElementById('montoModal').textContent;
+            const numero = document.getElementById('celModal').textContent;
 
-    const url = `comprobante.html?nombre=${encodeURIComponent(nombreReal)}&monto=${encodeURIComponent(monto)}&numero=${encodeURIComponent(numero)}`;
-    window.location.href = url;
-}
+            const url = `comprobante.html?nombre=${encodeURIComponent(nombreReal)}&monto=${encodeURIComponent(monto)}&numero=${encodeURIComponent(numero)}`;
+            window.location.href = url;
+        }
 
 
-     
-        function simularNombreDesdeCelular(numero) {
-            const contactos = {
+        function obtenerContactoDesdeLocalStorage(numero) {
+            const datos = JSON.parse(localStorage.getItem("contactosGuardados") || "{}");
+            return datos[numero] || { enmascarado: 'Usu*** Desconoc***', real: 'Usuario Desconocido' };
+        }
+
+        function guardarContacto(numero, enmascarado, real) {
+            const datos = JSON.parse(localStorage.getItem("contactosGuardados") || "{}");
+            datos[numero] = { enmascarado, real };
+            localStorage.setItem("contactosGuardados", JSON.stringify(datos));
+        }
+
+    </script>
+
+
+
+
+    <script>
+        function abrirModalContacto() {
+            document.getElementById('modalNuevoContacto').style.display = 'flex';
+        }
+        function cerrarModalContacto() {
+            document.getElementById('modalNuevoContacto').style.display = 'none';
+        }
+        function confirmarNuevoContacto() {
+            const numero = document.getElementById('nuevoCel').value.trim();
+            const real = document.getElementById('nuevoNombre').value.trim();
+            const enmascarado = document.getElementById('nuevoEnmascarado').value.trim();
+
+            if (!/^\d{10}$/.test(numero) || !real || !enmascarado) {
+                alert("Por favor completa todos los campos correctamente.");
+                return;
+            }
+
+            guardarContacto(numero, enmascarado, real);
+            cerrarModalContacto();
+            alert("Contacto guardado.");
+        }
+
+
+        function guardarContactosPorDefecto() {
+            const contactosPorDefecto = {
                 '3147645793': { enmascarado: 'Vic*** Paj***', real: 'Victor Pajaro' },
                 '3243037899': { enmascarado: 'Dei*** Mor***', real: 'Deiby Moreno' },
                 '3201234567': { enmascarado: 'Ana*** Lop***', real: 'Ana López' },
@@ -501,17 +557,24 @@
                 '3006276801': { enmascarado: 'Ron** Mal******', real: 'Ronal Rafael Maldonado' },
                 '3219519248': { enmascarado: 'Ann*** Rhe****', real: 'Annit Rhenals' },
                 '3023657211': { enmascarado: 'Lia**** Alv****', real: 'Lianith Alvarez' },
-                '3145549830': { enmascarado: 'Dei** Nar****', real: 'Deisy Naranjo' },
-
+                '3145549830': { enmascarado: 'Dei** Nar****', real: 'Deisy Naranjo' }
             };
-            return contactos[numero] || { enmascarado: 'Usu*** Desconoc***', real: 'Usuario Desconocido' };
+
+            let guardados = JSON.parse(localStorage.getItem("contactosGuardados") || "{}");
+
+            // Solo agrega si aún no están guardados
+            for (let numero in contactosPorDefecto) {
+                if (!guardados[numero]) {
+                    guardados[numero] = contactosPorDefecto[numero];
+                }
+            }
+
+            localStorage.setItem("contactosGuardados", JSON.stringify(guardados));
         }
 
-
-
+        // Llamar la función al cargar la página
+        guardarContactosPorDefecto();
     </script>
-
-
 </body>
 
 </html>
