@@ -467,7 +467,9 @@
       margin-top: -10px;
       align-items: center;
     }
-
+      .none-shacow{
+        box-shadow: none !important;
+      }
     .scroll-container::-webkit-scrollbar {
       display: none;
       /* Chrome, Safari */
