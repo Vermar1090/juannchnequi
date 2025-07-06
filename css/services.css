@@ -2,7 +2,8 @@ body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
   background-color: #f5f6f7;
-  color: #333;
+  color: #fd108e;
+  
 }
 
 .Container_Services {
@@ -39,6 +40,7 @@ margin-top: 30px;
 } */
 .icon-subtitle {
   font-size: 1.3rem;
+  color: #333;
 }
 
 
@@ -46,6 +48,7 @@ margin-top: 30px;
   font-size: 1.5rem;
   font-weight: 600;
   margin: 15px 0;
+  color: #333;
 }
 
 .Container_Grid__Modals__Categories__Grid {
