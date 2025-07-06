@@ -21,6 +21,13 @@
       overflow-x: hidden;
       color: white;
     }
+.seccion {
+  display: none;
+}
+
+.seccion.activa {
+  display: block;
+}
 
     /* Header container original */
     .header-container {

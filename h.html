@@ -11,7 +11,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="./css/h.css">
-
+  <link rel="stylesheet" href="./css/services.css">
+     <script src="https://kit.fontawesome.com/41a389fdb6.js" crossorigin="anonymous"></script>
+     <script src="./views//views.js"></script>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
@@ -179,29 +181,34 @@
     </div>
     <!-- second sceroll -->
      <!-- Algunos se ven desproporcionados pero es por los margenes de las imagenes -->
-    <div class="suggestions-section">
-      <div class="suggestions-title">Sugeridos Nequi</div>
-      <div class="services-grid scroll-container">
-        <div class="service-item">
-          <img width="90" height="90" src="./ico/Minegocio.svg" alt="" />
-          <div class="service-name">Mi Negocio</div>
+   <div class="suggestions-section">
+        <div class="suggestions-title">Sugeridos Nequi</div>
+        <div class="services-grid">
+          <div class="service-item">
+            <div class="service-icon negocio none-shacow">
+              <img width="90" height="90" src="./ico/Minegocio.svg" alt="" />
+            </div>
+            <div class="service-name">Mi Negocio</div>
+          </div>
+          <div class="service-item">
+            <div class="service-icon wom none-shacow">
+              <img width="50" src="./ico/WOM_Chile.svg.png" alt="" />
+            </div>
+            <div class="service-name">WOM</div>
+          </div>
+          <div class="service-item">
+            <div class="service-icon llaves none-shacow">
+              <img src="./ico/Mesa de trabajo 6.svg" alt="" />
+            </div>
+            <div class="service-name">Tus llaves</div>
+          </div>
+          <div class="service-item">
+            <div class="service-icon creditos none-shacow">
+              <img src="./ico/Creeditos.svg" alt="" />
+            </div>
+            <div class="service-name">Créditos</div>
+          </div>
         </div>
-        <div class="service-item">
-          <img width="50" src="./ico/WOM_Chile.svg.png" alt="" />
-          <div class="service-name">WOM</div>
-        </div>
-        <div class="service-item">
-          <img src="./ico/Mesa de trabajo 6.svg" alt="" />
-          <div class="service-name">Tus llaves</div>
-        </div>
-        <div class="service-item">
-          <img src="./ico/Creeditos.svg" alt="" />
-          <div class="service-name">Créditos</div>
-        </div>
-        <div class="service-name">Mi Negocio</div>
-      </div>
-      
-     
       </div>
     </div>
   </div>
@@ -233,14 +240,16 @@
         </div>
         <div class="monto salida">- $130.000,<span class="decimal">00</span></div>
       </div>
-
+<!-- DATOS TRAIDOS DESDE EL LOCALESTORAGE -->
       <div class="movimiento">
         <div class="icono"><i class="bi bi-arrow-up-circle" style="color: green;"></i></div>
         <div class="info-texto">
-          <div class="label">NODIS</div>
-          <div class="detalle">De Carmen Martínez</div>
+          <div class="label" id="labelTransaccion"></div> 
+          <div class="detalle" id="detalleNombre"></div> 
         </div>
-        <div class="monto entrada">+ $70.000,<span class="decimal">00</span></div>
+          <div class="monto entrada" id="montoTransaccion">   
+            <span class="decimal">00</span>
+          </div>
       </div>
     </div>
 
@@ -296,23 +305,47 @@
   </script>
   </div>
 <!-- ####################################################### -->
+<!-- Obtencion de los datos guardados en localstorage -->
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const nombre = localStorage.getItem('Usuario') || 'Usuario en storage Vcio';
+    const monto = localStorage.getItem('Monto') || '0';
 
+    document.getElementById('detalleNombre').textContent = `De ${nombre}`;
+    document.getElementById('montoTransaccion').textContent =`${monto}`;
+  });
+</script>
 
-
-
-
-
-
+<!-- Inicio Seccion de servicios -->
   <div id="servicios" class="seccion">
-    <h2>🧰 Servicios</h2>
-    <p>Accede a tus servicios disponibles.</p>
+    <div class="Container_Services">
+        <div class="Container_Search_Services">
+            <p class="title">Servicios</p>
+            <div class="Search">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input 
+                type="search"
+                id="services_search"
+                placeholder="Que empresa necesitas?"
+            >
+            </div>
+        </div>
+        <!-- Categories -->
+        <div class="Container_Grid__Categories">
+        <p class="subtitle">
+            <i class="fa-solid fa-border-all icon-subtitle"></i>
+            Categorías
+        </p>
+        <div id="categoriesGrid" class="Container_Grid__Modals__Categories__Grid"></div>
+        </div>
+
+    </div>
+    </div>
   </div>
+<!-- Fin Seccion de servicios -->
 
 
- 
-
-
-
+<!-- Inicio Botones del menu -->
  <div class="bottom-nav">
     <div class="menuuuu">
       <div class="nav-item active" onclick="navegar('inicio', this)">
@@ -334,6 +367,8 @@
       <!-- Overlay -->
       <div class="overlay" style="display: none;"></div>
   </div>
+<!-- Fin Botones del menu -->
+
 <!-- ####################################################### -->
 
   <!-- Script de navegación -->
@@ -347,6 +382,34 @@
       document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
       el.classList.add('active');
     }
+
+      // CONTENIDO DEL SERVICES
+      document.addEventListener('DOMContentLoaded', () => {
+        const categories = [
+          { nombre: "Celulares y paquetes", icon: "fa-solid fa-mobile-screen-button" },
+          { nombre: "Donaciones", icon: "fa-solid fa-face-smile-beam" },
+          { nombre: "Entretenimiento", icon: "fa-solid fa-film" },
+          { nombre: "Finanzas", icon: "fa-solid fa-coins" },
+          { nombre: "Negocios Nequi", icon: "fa-solid fa-store" },
+          { nombre: "Seguridad y salud", icon: "fa-solid fa-heart-pulse" },
+          { nombre: "Servicios Públicos", icon: "fa-solid fa-home" },
+          { nombre: "Tienda virtual", icon: "fa-solid fa-cart-shopping" },
+          { nombre: "Transporte y viajes", icon: "fa-solid fa-bus" },
+        ];
+
+        const container = document.getElementById('categoriesGrid');
+
+        categories.forEach(cat => {
+          const div = document.createElement('div');
+          div.className = `Container_Grid__Modals__Categories`;
+          div.innerHTML = `
+            <i class="${cat.icon} fa-2x icon-style"></i>
+            <p>${cat.nombre}</p>
+          `;
+          container.appendChild(div);
+        });
+      });
+
   </script>
 <!-- ####################################################### -->
   
@@ -442,7 +505,8 @@
                 <span class="close-btnc" onclick="closeModalpagoo()">&times;</span>
             </div>
             
-           <a href="https://vermar1090.github.io/juannchnequi/pago.html" style="text-decoration: none; color: inherit;">
+            <!-- <a href="https://vermar1090.github.io/juannchnequi/pago.html" style="text-decoration: none; color: inherit;"> -->
+           <a href="pago.html" style="text-decoration: none; color: inherit;">
             <div class="modal-optionpago">
               <div style="display: flex; align-items: center;">
                 <i class="bi bi-person-circle modal-icon"></i>
@@ -510,7 +574,7 @@
       function openModalpago() {
          const modal = document.getElementById('modalOverlay');
             modal.classList.add('show');
-            document.body.style.overflow = 'hidden'; // Prevenir scroll del bod
+            document.body.style.overflow = 'hidden';
         closeModal();
       }
 
@@ -584,7 +648,6 @@
       }
     </script>
 <!-- ####################################################### -->
-
 </body>
 
 </html>
